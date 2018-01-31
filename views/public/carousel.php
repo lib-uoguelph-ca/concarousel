@@ -32,21 +32,6 @@ if ($width != '100%'){
 ?>
 
 <div style="max-width:100%; max-height:100%; width:<?php echo $width;?>; float:<?php echo $float;?>; ">
-	<div class="carousel-navigation" style="max-width:100%; max-height:100%; width:<?php echo $tempwidth;?>; display:<?php echo $setPos;?>">
-		<?php foreach($items as $item): 
-			set_current_record('Item', $item);
-			if (metadata($item,'has files'))
-			{	?>
-				<?php echo files_for_item(
-				array(
-					'linkToFile' => false,
-					'imageSize' => 'square_thumbnail'
-				)
-			);?>
-			<?php }; ?>
-		<?php endforeach; ?>
-	</div>		
-
 	<div class="carousel-stage" style="max-width:100%; max-height:100%; width:<?php echo $tempwidth;?>;" >
 		<?php foreach($items as $item):
 			set_current_record('Item', $item);
@@ -97,23 +82,7 @@ if ($width != '100%'){
 					    };
 					})();
 		        });
-	jQuery('.carousel-navigation').slick({
-		centerPadding: '60px',
-	    asNavFor: '.carousel-stage',
-		accessibility:true,    
-		swipeToSlide: true,
-		variableWidth: false,
-		adaptiveHeight: false,
-		slidesToShow: <?php echo $configs['slidesToShow'];?>,
-		slidesToScroll: <?php echo $configs['slidesToScroll'];?>,
-	    centerMode: <?php echo $configs['centerMode'];?>,
-		autoplay: <?php echo $configs['autoPlay'];?>,
-		autoplaySpeed: <?php echo $configs['autoplaySpeed'];?>,
-	    focusOnSelect: <?php echo $configs['focusOnSelect'];?>,
-		arrows: <?php echo $configs['arrows'];?>,
-		prevArrow: '<input class="slick-prev" type="submit" value="&laquo;" />',
-		nextArrow: '<input class="slick-next" type="submit" value="&raquo;" />',
-	});
+
 	 jQuery('.carousel-stage').slick({
 	    slidesToShow: 1,
 	    slidesToScroll: 1,
@@ -124,7 +93,12 @@ if ($width != '100%'){
 		adaptiveHeight: true,
 	    asNavFor: '.carousel-navigation',
 		prevArrow: '<input class="slick-prev" type="submit" value="&laquo;" />',
-		nextArrow: '<input class="slick-next" type="submit" value="&raquo;" />',
+        nextArrow: '<input class="slick-next" type="submit" value="&raquo;" />',
+        dots: true,
+        autoplay: <?php echo $configs['autoPlay'];?>,
+		autoplaySpeed: <?php echo $configs['autoplaySpeed'];?>,
+	    focusOnSelect: <?php echo $configs['focusOnSelect'];?>,
+		arrows: <?php echo $configs['arrows'];?>,
 	});
 	
 		jQuery(".download-file")
