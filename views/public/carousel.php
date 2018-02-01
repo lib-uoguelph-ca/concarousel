@@ -31,6 +31,23 @@ if ($width != '100%'){
 };
 ?>
 
+<style>
+.item-file {
+    width: 100%;
+}
+
+.state-img {
+    padding: 0.5em; 
+    border-radius: 
+    5px !important; 
+    color: white; 
+    background-color: #5f5f5f; 
+    opacity: 0.8; 
+    position: absolute; 
+    z-index: 1
+}
+</style>
+
 <div style="max-width:100%; max-height:100%; width:<?php echo $width;?>; float:<?php echo $float;?>; ">
 	<div class="carousel-stage" style="max-width:100%; max-height:100%; width:<?php echo $tempwidth;?>;" >
 		<?php foreach($items as $item):
@@ -83,59 +100,98 @@ if ($width != '100%'){
 					})();
 		        });
 
-	 jQuery('.carousel-stage').slick({
-	    slidesToShow: 1,
-	    slidesToScroll: 1,
-	    arrows: <?php echo $shoArrows;?>,
-	    fade: true,
-		centerMode: true,
-		variableWidth: false,
-		adaptiveHeight: true,
-	    asNavFor: '.carousel-navigation',
-		prevArrow: '<input class="slick-prev" type="submit" value="&laquo;" />',
-        nextArrow: '<input class="slick-next" type="submit" value="&raquo;" />',
-        dots: true,
-        autoplay: <?php echo $configs['autoPlay'];?>,
-		autoplaySpeed: <?php echo $configs['autoplaySpeed'];?>,
-	    focusOnSelect: <?php echo $configs['focusOnSelect'];?>,
-		arrows: <?php echo $configs['arrows'];?>,
-	});
+        jQuery('.carousel-stage').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: <?php echo $shoArrows;?>,
+            fade: true,
+            centerMode: true,
+            variableWidth: false,
+            adaptiveHeight: true,
+            asNavFor: '.carousel-navigation',
+            prevArrow: '<input class="slick-prev" type="submit" value="&laquo;" />',
+            nextArrow: '<input class="slick-next" type="submit" value="&raquo;" />',
+            dots: false,
+            autoplay: <?php echo $configs['autoPlay'];?>,
+            autoplaySpeed: <?php echo $configs['autoplaySpeed'];?>,
+            focusOnSelect: <?php echo $configs['focusOnSelect'];?>,
+            arrows: <?php echo $configs['arrows'];?>,
+            pauseOnHover: false,
+        });
 	
-		jQuery(".download-file")
-			.attr('rel', 'gallery')
-			.fancybox({
-		   		openEffect	: 'elastic',
-		    	closeEffect	: 'elastic',
-				fitToView: 'true',
-				arrows: 'true',
-
-		    	helpers : {
-		    		title : {
-		    			type : 'inside'
-		    		}
-		    	},
-				'beforeClose': function(current){
-							jQuery('.carousel-navigation').slick('slickGoTo',this.index);
-					}
-		});
-		
 		jQuery('.carousel-stage').on('afterChange',function(event, slick, currentSlide, nextSlide){
 			
-		jQuery('img.full')[jQuery('.carousel-stage').slick('slickCurrentSlide')].onmouseover = (function() {
-		    var onmousestop = function() {
-		       jQuery('input.slick-next').css('display', 'none');
-		       jQuery('input.slick-prev').css('display', 'none');
-		    }, thread;
+            jQuery('img.full')[jQuery('.carousel-stage').slick('slickCurrentSlide')].onmouseover = (function() {
+                var onmousestop = function() {
+                    jQuery('input.slick-next').css('display', 'none');
+                    jQuery('input.slick-prev').css('display', 'none');
+                }, thread;
 
-	    return function() {
-	       jQuery('input.slick-next').css('display', 'block');
-	       jQuery('input.slick-prev').css('display', 'block');
-		        clearTimeout(thread);
-		        thread = setTimeout(onmousestop, 2000);
-		    };
-		})();
-		});
-		
-	});
+                return function() {
+                    jQuery('input.slick-next').css('display', 'block');
+                    jQuery('input.slick-prev').css('display', 'block');
+                        clearTimeout(thread);
+                        thread = setTimeout(onmousestop, 2000);
+                    };
+            })();
+        });
+	
+        jQuery('.slick-slide').append("<span class='state-img fas fa-pause-circle fa-3x'></span>");
+        jQuery('.state-img').hide();
+        jQuery('.carousel-stage').data('state', 'playing');
 
+        jQuery('.slick-slide').mouseover(function(e) {
+            jQuery('.state-img').show();
+            positionToggle(e);
+        });
+        
+        jQuery('.slick-slide').on('focus', (function(e) {
+            jQuery('.state-img').show();
+            positionToggle(e);
+        }));
+ 
+        jQuery('.slick-slide').mouseout(function(e) {
+            jQuery('.state-img').hide();
+        });
+       
+        jQuery('.slick-slide').off('focus', (function(e) {
+            jQuery('.state-img').hide();
+        }));
+
+        jQuery('.slick-slide').click(function(e) {
+            console.log("state: " + jQuery('.carousel-stage').data('state')); 
+            state = jQuery('.carousel-stage').data('state');
+            (state === 'playing') ? pause(): play();
+            e.preventDefault();
+        });
+	
+    });
+
+    function positionToggle(e) {
+        var element = jQuery('div.slick-slide.slick-current.slick-active');
+
+        var height = element.height();
+        console.log(height);
+        var img_height = (height / 2) - 45;
+        console.log(img_height);
+        jQuery('.state-img').css('top', img_height);
+        
+        jQuery('.state-img').css('left', "50%");
+    }
+
+    function play() {
+        console.log('play');
+        jQuery('.carousel-stage').slick('slickPlay');
+        jQuery('.carousel-stage').data('state', 'playing');
+        jQuery('.state-img').removeClass('fa-pause-circle');
+        jQuery('.state-img').addClass('fa-play-circle');
+    }
+   
+    function pause() {
+        console.log('pause');
+        jQuery('.carousel-stage').slick('slickPause');
+        jQuery('.carousel-stage').data('state', 'paused');
+        jQuery('.state-img').removeClass('fa-play-circle');
+        jQuery('.state-img').addClass('fa-pause-circle');
+    }
 </script>

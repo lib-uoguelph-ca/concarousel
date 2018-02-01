@@ -27,7 +27,12 @@ class ShortcodeConnectedCarouselPlugin extends Omeka_Plugin_AbstractPlugin
 		queue_js_file('slick');
 		queue_css_file('jquery.fancybox');
 		queue_css_file('jquery.fancybox-buttons');
-		queue_js_file('jquery.fancybox');?>
+        queue_js_file('jquery.fancybox');
+        queue_css_file('fontawesome/web-fonts-with-css/css/fontawesome-all');
+        //queue_js_file('fa-solid.min');
+		//queue_css_file('fa-svg-with-js');
+
+        ?>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 
