@@ -183,13 +183,13 @@ if ($width != '100%'){
 
     function play() {
         jQuery('.carousel-stage').slick('slickPlay');
-        jQuery('.state-img').removeClass('fa-pause-circle');
-        jQuery('.state-img').addClass('fa-play-circle');
+        jQuery('.state-img').removeClass('fa-play-circle');
+        jQuery('.state-img').addClass('fa-pause-circle');
     }
    
     function pause() {
         jQuery('.carousel-stage').slick('slickPause');
-        jQuery('.state-img').removeClass('fa-play-circle');
-        jQuery('.state-img').addClass('fa-pause-circle');
+        jQuery('.state-img').removeClass('fa-pause-circle');
+        jQuery('.state-img').addClass('fa-play-circle');
     }
 </script>
