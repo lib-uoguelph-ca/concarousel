@@ -49,7 +49,7 @@ if ($width != '100%'){
 </style>
 
 <div style="max-width:100%; max-height:100%; width:<?php echo $width;?>; float:<?php echo $float;?>; ">
-	<div class="carousel-stage" style="max-width:100%; max-height:100%; width:<?php echo $tempwidth;?>;" >
+	<div class="carousel-stage" aria-label="Image carousel. Use arrow keys to advance and the k key to toggle pause or play." style="max-width:100%; max-height:100%; width:<?php echo $tempwidth;?>;" >
 		<?php foreach($items as $item):
 			set_current_record('Item', $item);
 			if (metadata($item,'has files'))
@@ -120,6 +120,21 @@ if ($width != '100%'){
             pauseOnDotsHover: false,
             pauseOnFocus: false,
         });
+
+        jQuery(document).keypress(function(event) {
+            console.log(event);
+            //Dont slide if the cursor is inside the form fields and arrow keys are pressed
+            if(!event.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
+                if (event.keyCode === 107 && player['0'].slick.options.accessibility === true) {
+                    if (player['0'].slick.paused) {
+                        play();
+                    }
+                    else {
+                        pause();
+                    }
+                }
+            }
+        }); 
 	
 		jQuery('.carousel-stage').on('afterChange',function(event, slick, currentSlide, nextSlide){
 			
