@@ -100,7 +100,7 @@ if ($width != '100%'){
 					})();
 		        });
 
-        jQuery('.carousel-stage').slick({
+        player = jQuery('.carousel-stage').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: <?php echo $shoArrows;?>,
@@ -117,6 +117,8 @@ if ($width != '100%'){
             focusOnSelect: <?php echo $configs['focusOnSelect'];?>,
             arrows: <?php echo $configs['arrows'];?>,
             pauseOnHover: false,
+            pauseOnDotsHover: false,
+            pauseOnFocus: false,
         });
 	
 		jQuery('.carousel-stage').on('afterChange',function(event, slick, currentSlide, nextSlide){
@@ -159,10 +161,13 @@ if ($width != '100%'){
         }));
 
         jQuery('.slick-slide').click(function(e) {
-            console.log("state: " + jQuery('.carousel-stage').data('state')); 
-            state = jQuery('.carousel-stage').data('state');
-            (state === 'playing') ? pause(): play();
             e.preventDefault();
+            if (player['0'].slick.paused) {
+                play();
+            }
+            else {
+                pause();
+            }
         });
 	
     });
@@ -171,26 +176,19 @@ if ($width != '100%'){
         var element = jQuery('div.slick-slide.slick-current.slick-active');
 
         var height = element.height();
-        console.log(height);
         var img_height = (height / 2) - 45;
-        console.log(img_height);
         jQuery('.state-img').css('top', img_height);
-        
         jQuery('.state-img').css('left', "50%");
     }
 
     function play() {
-        console.log('play');
         jQuery('.carousel-stage').slick('slickPlay');
-        jQuery('.carousel-stage').data('state', 'playing');
         jQuery('.state-img').removeClass('fa-pause-circle');
         jQuery('.state-img').addClass('fa-play-circle');
     }
    
     function pause() {
-        console.log('pause');
         jQuery('.carousel-stage').slick('slickPause');
-        jQuery('.carousel-stage').data('state', 'paused');
         jQuery('.state-img').removeClass('fa-play-circle');
         jQuery('.state-img').addClass('fa-pause-circle');
     }
